@@ -13,11 +13,12 @@ public class TestPanelWindow extends JFrame{
 	public static void main(String[] args) {
 		
 		TestPanelWindow tpw = new TestPanelWindow();
-		tpw.setSize(500,500);
+		tpw.setSize(700	,700);
 		tpw.setLocationRelativeTo(null);
 		
+	
 		//PANEL
-		tpw.add(new OptionPanel());
+		tpw.add(new FieldPanel(10));
 		
 		//
 		
