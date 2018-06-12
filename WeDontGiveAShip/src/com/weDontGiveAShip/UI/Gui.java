@@ -34,6 +34,11 @@ public class Gui extends JFrame{
 		add(shipPlacer);
 		SwingUtilities.updateComponentTreeUI(Main.gui);
 	}
+	
+	public void openMatchPanel() {
+		clear();
+		SwingUtilities.updateComponentTreeUI(Main.gui);
+	}
 
 	public static void clear(){
 		Main.gui.getContentPane().removeAll();
