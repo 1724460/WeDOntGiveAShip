@@ -76,7 +76,7 @@ public class FieldPanel extends JPanel {
 	}
 	
 	public void setColor(int x, int y, Color color) {
-		buttons[x][y].setBackground(Color.GRAY);
+		buttons[x][y].setBackground(color);
 	}
 	
 	public void Update() {
