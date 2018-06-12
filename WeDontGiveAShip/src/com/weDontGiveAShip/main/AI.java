@@ -78,10 +78,10 @@ public class AI implements Player {
 		// implementation no touch
 		Ship ships[] = new Ship[SHIP_COUNT];
 
-//		ships[0] = generateShip(2);
-//		ships[1] = generateShip(2);
-//		ships[2] = generateShip(2);
-//		ships[3] = generateShip(2);
+		ships[0] = generateShip(2);
+		ships[1] = generateShip(2);
+		ships[2] = generateShip(2);
+		ships[3] = generateShip(2);
 //		ships[4] = generateShip(2);
 //		ships[5] = generateShip(3);
 //		ships[6] = generateShip(3);
@@ -121,7 +121,7 @@ public class AI implements Player {
 			
 			for (Position occupiedPosition : ship.getOccupiedSpaces()) {
 				
-				System.out.println(occupiedPosition.x+", "+occupiedPosition.y);
+				System.out.println(occupiedPosition.x+", "+occupiedPosition.y + "test");
 				
 				if (alreadyTakenPositions.contains(occupiedPosition)) {
 					continueSearching = true;
@@ -138,7 +138,7 @@ public class AI implements Player {
 			alreadyTakenPositions.add(occupiedPosition);
 		}
 		
-		alreadyTakenPositions.forEach(p -> System.out.println(p.toString()));
+		alreadyTakenPositions.forEach(p -> System.out.println(p.toString() + "asd"));
 		
 		return ship;
 	}
