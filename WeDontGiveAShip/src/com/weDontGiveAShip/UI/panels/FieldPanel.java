@@ -33,7 +33,7 @@ public class FieldPanel extends JPanel {
 
 	private JButton[][] buttons;
 
-	public FieldPanel(int gridSize) {
+	public FieldPanel(int gridSize, boolean enabled) {
 		super();
 		setLayout(new GridLayout(gridSize + 1, gridSize + 1));
 
@@ -58,6 +58,8 @@ public class FieldPanel extends JPanel {
 			for (int y = 0; y < gridSize; y++) {
 
 				JButton currentButton = new JButton("");
+				
+				currentButton.setEnabled(enabled);
 				buttons[x][y] = currentButton;
 
 				currentButton.addActionListener(new Listener(this, x, y));
