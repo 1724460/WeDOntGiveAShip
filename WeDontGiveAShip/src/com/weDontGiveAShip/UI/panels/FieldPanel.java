@@ -70,8 +70,12 @@ public class FieldPanel extends JPanel {
 		}
 	}
 
-	private void onClick(int x, int y) {
+	public void onClick(int x, int y) {
 		System.out.println("Clicked(" + x + ", " + y + ")");
+		buttons[x][y].setBackground(Color.GRAY);
+	}
+	
+	public void setColor(int x, int y, Color color) {
 		buttons[x][y].setBackground(Color.GRAY);
 	}
 	

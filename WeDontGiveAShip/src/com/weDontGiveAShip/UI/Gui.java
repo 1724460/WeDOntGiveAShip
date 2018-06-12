@@ -1,7 +1,11 @@
+
 package com.weDontGiveAShip.UI;
 
 import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
 
+import com.weDontGiveAShip.UI.panels.FieldPanel;
+import com.weDontGiveAShip.UI.panels.ShipPlacerPanel;
 import com.weDontGiveAShip.main.Main;
 
 public class Gui extends JFrame{
@@ -27,9 +31,9 @@ public class Gui extends JFrame{
 
 	public void openShipPlacer() {
 		clear();
-		
-		
-		
+		ShipPlacerPanel shipPlacer = new ShipPlacerPanel();
+		add(shipPlacer);
+		SwingUtilities.updateComponentTreeUI(Main.gui);
 	}
 
 	public static void clear(){
@@ -38,3 +42,4 @@ public class Gui extends JFrame{
 	}
 	
 }
+
