@@ -10,7 +10,7 @@ import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
-public class MainMenuPanel extends JPanel{
+public class MainMenuPanel extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 	

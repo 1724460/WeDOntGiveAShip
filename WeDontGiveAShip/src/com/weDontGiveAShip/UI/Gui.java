@@ -29,6 +29,7 @@ public class Gui extends JFrame{
 		clear();
 		
 		
+		
 	}
 
 	public static void clear(){
