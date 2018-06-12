@@ -14,9 +14,9 @@ public class MainMenuPanel extends JPanel{
 
 	private static final long serialVersionUID = 1L;
 	
-	public JButton playButton;
-	public JButton exitButton;
-	private JLayeredPane backgroundPanel;
+	public static JButton playButton;
+	public static JButton exitButton;
+	private static JLayeredPane backgroundPanel;
 	
 	public MainMenuPanel() {
 		setLayout(null);
@@ -29,7 +29,7 @@ public class MainMenuPanel extends JPanel{
 		playButton.setFocusPainted(false);
 		playButton.setOpaque(false);
 		playButton.setContentAreaFilled(false);
-		playButton.addActionListener(new MainMenuListener());
+		playButton.addActionListener(new ButtonListener());
 		
 		add(playButton);
 
@@ -40,7 +40,7 @@ public class MainMenuPanel extends JPanel{
 		exitButton.setFocusPainted(false);
 		exitButton.setOpaque(false);
 		exitButton.setContentAreaFilled(false);
-		exitButton.addActionListener(new MainMenuListener());
+		exitButton.addActionListener(new ButtonListener());
 		
 		add(exitButton);
 		
