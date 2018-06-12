@@ -10,6 +10,7 @@ import javax.swing.JFrame;
 
 import com.weDontGiveAShip.UI.panels.FieldPanel;
 import com.weDontGiveAShip.interfaces.Direction;
+import com.weDontGiveAShip.interfaces.InvalidActionException;
 import com.weDontGiveAShip.interfaces.InvalidShipPlacementException;
 import com.weDontGiveAShip.interfaces.Player;
 import com.weDontGiveAShip.interfaces.Position;
@@ -18,7 +19,7 @@ import com.weDontGiveAShip.interfaces.ShipPlacer;
 import com.weDontGiveAShip.interfaces.Tile;
 import com.weDontGiveAShip.interfaces.TurnAction;
 
-public class AI implements Player {
+public class AI extends PlayerImpl {
 
 	public static final int SHIP_COUNT = 11;
 	public static final int SHIP_COUNT_1 = 0;
@@ -59,8 +60,20 @@ public class AI implements Player {
 
 	@Override
 	public void takeTurn(TurnAction turnAction) {
-		// TODO Auto-generated method stub
+		
+		Position shootAtPosition = getShootAtPosition();
+		
+		try {
+			turnAction.shootTile(shootAtPosition);
+		} catch (InvalidActionException e) {
+			e.printStackTrace();
+		}
 
+	}
+
+	private Position getShootAtPosition() {
+		//	hier bestimmen auf welches feld die ai schießen soll
+		return null;
 	}
 
 	@Override
@@ -78,24 +91,21 @@ public class AI implements Player {
 		// implementation no touch
 		Ship ships[] = new Ship[SHIP_COUNT];
 
-//		ships[0] = generateShip(2);
-//		ships[1] = generateShip(2);
-//		ships[2] = generateShip(2);
-//		ships[3] = generateShip(2);
-//		ships[4] = generateShip(2);
-//		ships[5] = generateShip(3);
-//		ships[6] = generateShip(3);
-//		ships[7] = generateShip(3);
-//		ships[8] = generateShip(3);
-//		ships[9] = generateShip(4);
-//		ships[10] = generateShip(4);
-//		ships[11] = generateShip(5);
-
-		ships = getPreset();
-		
+		ships[0] = generateShip(2);
+		ships[1] = generateShip(2);
+		ships[2] = generateShip(2);
+		ships[3] = generateShip(2);
+		ships[4] = generateShip(2);
+		ships[5] = generateShip(3);
+		ships[6] = generateShip(3);
+		ships[7] = generateShip(3);
+		ships[8] = generateShip(4);
+		ships[9] = generateShip(4);
+		ships[10] = generateShip(5);
+	
 		for (int i = 0; i < ships.length; i++) {
 			for(Position position : ships[i].getOccupiedSpaces()) {
-				panel.setColor(position.y, position.x, Color.RED);
+				panel.setColor(position.x, position.y, Color.RED);
 			}
 		}
 
@@ -103,9 +113,6 @@ public class AI implements Player {
 	}
 
 	private Ship generateShip(int size) {
-		Random rand = new Random();
-
-
 		Ship ship;
 		boolean continueSearching = false;
 
@@ -113,7 +120,8 @@ public class AI implements Player {
 		Direction direction;
 		
 		do {
-		
+			continueSearching = false;
+			
 			direction = getRandomDirection();
 			
 			position = getRandomPosition(size, direction);
@@ -122,25 +130,12 @@ public class AI implements Player {
 			
 			
 			for (Position occupiedPosition : ship.getOccupiedSpaces()) {
-				
-				System.out.println(occupiedPosition.x+", "+occupiedPosition.y + "test");
-				
 				if (alreadyTakenPositions.contains(occupiedPosition)) {
 					continueSearching = true;
-					System.out.println("ye");
-//					System.exit(0);
 				}
 			}
-			System.out.println("-----------------");
 			
 		} while (continueSearching);
-
-		
-		for (Position occupiedPosition : ship.getOccupiedSpaces()) {
-			alreadyTakenPositions.add(occupiedPosition);
-		}
-		
-		alreadyTakenPositions.forEach(p -> System.out.println(p.toString() + "asd"));
 		
 		return ship;
 	}
@@ -151,12 +146,12 @@ public class AI implements Player {
 		int x, y;
 		
 		if (direction == Direction.HORIZONTAL) {
-			x = rand.nextInt(PLAYFIELD_SIZE-1 - size);
-			y = rand.nextInt(PLAYFIELD_SIZE-1);
+			x = rand.nextInt(PLAYFIELD_SIZE - 1);
+			y = rand.nextInt(PLAYFIELD_SIZE - 1 - size);
 
 		} else {
-			x = rand.nextInt(PLAYFIELD_SIZE-1);
-			y = rand.nextInt(PLAYFIELD_SIZE-1 - size);
+			x = rand.nextInt(PLAYFIELD_SIZE - 1 - size);
+			y = rand.nextInt(PLAYFIELD_SIZE - 1);
 		}
 		
 		return new Position(x, y);
@@ -174,24 +169,6 @@ public class AI implements Player {
 		}
 		
 		return direction;
-	}
-	
-	private Ship[] getPreset() {
-		Ship[] ships = new Ship[SHIP_COUNT];
-		
-		ships[0] = new Ship(new Position(1, 1), Direction.VERTICAL, 2);
-		ships[1] = new Ship(new Position(4, 3), Direction.VERTICAL, 2);
-		ships[2] = new Ship(new Position(8, 6), Direction.HORIZONTAL, 2);
-		ships[3] = new Ship(new Position(4, 6), Direction.HORIZONTAL, 2);
-		ships[4] = new Ship(new Position(5, 6), Direction.HORIZONTAL, 2);
-		ships[5] = new Ship(new Position(7, 3), Direction.HORIZONTAL, 3);
-		ships[6] = new Ship(new Position(1, 5), Direction.HORIZONTAL, 3);
-		ships[7] = new Ship(new Position(6, 0), Direction.VERTICAL, 3);
-		ships[8] = new Ship(new Position(2, 9), Direction.VERTICAL, 4);
-		ships[9] = new Ship(new Position(4, 2), Direction.VERTICAL, 4);
-		ships[10] = new Ship(new Position(9, 3), Direction.HORIZONTAL, 5);
-		
-		return ships;
 	}
 	
 }
