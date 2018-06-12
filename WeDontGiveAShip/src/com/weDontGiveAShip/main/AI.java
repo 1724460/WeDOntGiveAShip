@@ -1,9 +1,14 @@
 package com.weDontGiveAShip.main;
 
+import java.awt.Color;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
+import javax.swing.JFrame;
+
+import com.weDontGiveAShip.UI.panels.FieldPanel;
 import com.weDontGiveAShip.interfaces.Direction;
 import com.weDontGiveAShip.interfaces.InvalidShipPlacementException;
 import com.weDontGiveAShip.interfaces.Player;
@@ -21,21 +26,32 @@ public class AI implements Player {
 	public static final int SHIP_COUNT_3 = 4;
 	public static final int SHIP_COUNT_4 = 2;
 	public static final int SHIP_COUNT_5 = 1;
-	
+
 	public static final int PLAYFIELD_SIZE = 10;
 
 	List<Position> alreadyTakenPositions = new ArrayList<Position>();
-	
+	static FieldPanel panel;
+
 	public static void main(String args[]) {
+		JFrame f = new JFrame();
+
+		f.setSize(600, 800);
+		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+		panel = new FieldPanel(PLAYFIELD_SIZE, false);
+		f.add(panel);
+		f.setVisible(true);
+
 		new AI().placeShips(new ShipPlacerImpl());
 	}
-	
+
 	@Override
 	public void placeShips(ShipPlacer placer) {
 		Ship[] ships = generateShips();
-		
+
 		try {
 			placer.setShips(ships);
+			
 		} catch (InvalidShipPlacementException e) {
 			e.printStackTrace();
 		}
@@ -44,95 +60,118 @@ public class AI implements Player {
 	@Override
 	public void takeTurn(TurnAction turnAction) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void onEnemyShot(Position position, Tile tile, Ship ship) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void gameOver(boolean youHaveWon) {
 		// TODO Auto-generated method stub
 	}
-	
+
 	public Ship[] generateShips() {
-		//	implementation no touch
+		// implementation no touch
 		Ship ships[] = new Ship[SHIP_COUNT];
-		
-		
-		ships[0] = generateShip(2);
-		ships[1] = generateShip(2);
-		ships[2] = generateShip(2);
-		ships[3] = generateShip(2);
-		ships[4] = generateShip(2);
-		ships[5] = generateShip(3);
-		ships[6] = generateShip(3);
-		ships[7] = generateShip(3);
-		ships[8] = generateShip(3);
-		ships[9] = generateShip(4);
-		ships[10] = generateShip(4);
-		ships[11] = generateShip(5);
-		
-		
-		for(int i = 0; i<ships.length; i++) {
-			System.out.println(ships[i].toString());
-			System.out.println("-----------------");
+
+//		ships[0] = generateShip(2);
+//		ships[1] = generateShip(2);
+//		ships[2] = generateShip(2);
+//		ships[3] = generateShip(2);
+//		ships[4] = generateShip(2);
+//		ships[5] = generateShip(3);
+//		ships[6] = generateShip(3);
+//		ships[7] = generateShip(3);
+//		ships[8] = generateShip(3);
+//		ships[9] = generateShip(4);
+//		ships[10] = generateShip(4);
+//		ships[11] = generateShip(5);
+
+		for (int i = 0; i < ships.length; i++) {
+			for(Position position : ships[i].getOccupiedSpaces()) {
+				panel.setColor(position.y, position.x, Color.RED);
+			}
 		}
-		
+
 		return ships;
 	}
 
 	private Ship generateShip(int size) {
-		Ship ship;
 		Random rand = new Random();
-		
+
+
+		Ship ship;
+		boolean continueSearching = false;
+
+		Position position;
 		Direction direction;
 		
-		//	Random boolean für Ausrichtung
-		if(rand.nextBoolean()) {
-			direction = Direction.HORIZONTAL;
+		do {
+		
+			direction = getRandomDirection();
 			
-		}else {
+			position = getRandomPosition(size, direction);
+
+			ship = new Ship(position, direction, size);
+			
+			
+			for (Position occupiedPosition : ship.getOccupiedSpaces()) {
+				
+				System.out.println(occupiedPosition.x+", "+occupiedPosition.y);
+				
+				if (alreadyTakenPositions.contains(occupiedPosition)) {
+					continueSearching = true;
+					System.out.println("ye");
+//					System.exit(0);
+				}
+			}
+			System.out.println("-----------------");
+			
+		} while (continueSearching);
+
+		
+		for (Position occupiedPosition : ship.getOccupiedSpaces()) {
+			alreadyTakenPositions.add(occupiedPosition);
+		}
+		
+		alreadyTakenPositions.forEach(p -> System.out.println(p.toString()));
+		
+		return ship;
+	}
+
+	private Position getRandomPosition(int size, Direction direction) {
+		Random rand = new Random();
+		
+		int x, y;
+		
+		if (direction == Direction.HORIZONTAL) {
+			x = rand.nextInt(PLAYFIELD_SIZE-1 - size);
+			y = rand.nextInt(PLAYFIELD_SIZE-1);
+
+		} else {
+			x = rand.nextInt(PLAYFIELD_SIZE-1);
+			y = rand.nextInt(PLAYFIELD_SIZE-1 - size);
+		}
+		
+		return new Position(x, y);
+	}
+
+	private Direction getRandomDirection() {
+		Direction direction;
+
+		// Random boolean für Ausrichtung
+		if (new Random().nextBoolean()) {
+			direction = Direction.HORIZONTAL;
+
+		} else {
 			direction = Direction.VERTICAL;
 		}
 		
-		//	is true if direction == horizontal
-		boolean isHorizontal = (direction == Direction.HORIZONTAL);
-		
-		int x;
-		int y;
-		
-		if(isHorizontal) {
-			x = rand.nextInt(PLAYFIELD_SIZE-size);
-			y = rand.nextInt(PLAYFIELD_SIZE);
-			
-		}else {
-			x = rand.nextInt(PLAYFIELD_SIZE);
-			y = rand.nextInt(PLAYFIELD_SIZE-size);
-		}
-		
-		
-		Position position = new Position(x, y);
-		
-		while(alreadyTakenPositions.contains(position)) {
-			
-			if(isHorizontal) {
-				x = rand.nextInt(PLAYFIELD_SIZE-size);
-				y = rand.nextInt(PLAYFIELD_SIZE);
-				
-			}else {
-				x = rand.nextInt(PLAYFIELD_SIZE);
-				y = rand.nextInt(PLAYFIELD_SIZE-size);
-			}
-			
-			position = new Position(x, y);
-		}
-		
-		
-		return new Ship(position, direction, size);
+		return direction;
 	}
-	
+
 }
