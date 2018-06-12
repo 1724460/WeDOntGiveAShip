@@ -20,7 +20,7 @@ import com.weDontGiveAShip.interfaces.TurnAction;
 
 public class AI implements Player {
 
-	public static final int SHIP_COUNT = 12;
+	public static final int SHIP_COUNT = 11;
 	public static final int SHIP_COUNT_1 = 0;
 	public static final int SHIP_COUNT_2 = 5;
 	public static final int SHIP_COUNT_3 = 4;
@@ -78,10 +78,10 @@ public class AI implements Player {
 		// implementation no touch
 		Ship ships[] = new Ship[SHIP_COUNT];
 
-		ships[0] = generateShip(2);
-		ships[1] = generateShip(2);
-		ships[2] = generateShip(2);
-		ships[3] = generateShip(2);
+//		ships[0] = generateShip(2);
+//		ships[1] = generateShip(2);
+//		ships[2] = generateShip(2);
+//		ships[3] = generateShip(2);
 //		ships[4] = generateShip(2);
 //		ships[5] = generateShip(3);
 //		ships[6] = generateShip(3);
@@ -91,6 +91,8 @@ public class AI implements Player {
 //		ships[10] = generateShip(4);
 //		ships[11] = generateShip(5);
 
+		ships = getPreset();
+		
 		for (int i = 0; i < ships.length; i++) {
 			for(Position position : ships[i].getOccupiedSpaces()) {
 				panel.setColor(position.y, position.x, Color.RED);
@@ -173,5 +175,23 @@ public class AI implements Player {
 		
 		return direction;
 	}
-
+	
+	private Ship[] getPreset() {
+		Ship[] ships = new Ship[SHIP_COUNT];
+		
+		ships[0] = new Ship(new Position(1, 1), Direction.VERTICAL, 2);
+		ships[1] = new Ship(new Position(4, 3), Direction.VERTICAL, 2);
+		ships[2] = new Ship(new Position(8, 6), Direction.HORIZONTAL, 2);
+		ships[3] = new Ship(new Position(4, 6), Direction.HORIZONTAL, 2);
+		ships[4] = new Ship(new Position(5, 6), Direction.HORIZONTAL, 2);
+		ships[5] = new Ship(new Position(7, 3), Direction.HORIZONTAL, 3);
+		ships[6] = new Ship(new Position(1, 5), Direction.HORIZONTAL, 3);
+		ships[7] = new Ship(new Position(6, 0), Direction.VERTICAL, 3);
+		ships[8] = new Ship(new Position(2, 9), Direction.VERTICAL, 4);
+		ships[9] = new Ship(new Position(4, 2), Direction.VERTICAL, 4);
+		ships[10] = new Ship(new Position(9, 3), Direction.HORIZONTAL, 5);
+		
+		return ships;
+	}
+	
 }
