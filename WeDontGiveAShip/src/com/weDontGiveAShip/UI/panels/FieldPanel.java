@@ -11,6 +11,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
+import com.weDontGiveAShip.main.Main;
+
 public class FieldPanel extends JPanel {
 
 	// ActionListener
@@ -63,7 +65,7 @@ public class FieldPanel extends JPanel {
 				buttons[x][y] = currentButton;
 
 				currentButton.addActionListener(new Listener(this, x, y));
-				currentButton.setBackground(Color.WHITE);
+				currentButton.setBackground(Main.WATER_COLOR);
 				add(currentButton);
 
 			}
@@ -72,7 +74,6 @@ public class FieldPanel extends JPanel {
 
 	public void onClick(int x, int y) {
 		System.out.println("Clicked(" + x + ", " + y + ")");
-		buttons[x][y].setBackground(Color.GRAY);
 	}
 	
 	public void setColor(int x, int y, Color color) {

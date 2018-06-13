@@ -1,11 +1,18 @@
 package com.weDontGiveAShip.main;
 
+import java.awt.Color;
+
 import com.weDontGiveAShip.UI.Gui;
 import com.weDontGiveAShip.interfaces.GameSettings;
 import com.weDontGiveAShip.interfaces.GameSettings.ShipBorderConditions;
 import com.weDontGiveAShip.interfaces.GameSettingsBuilder;
 
 public class Main {
+
+	public final static Color SHIP_COLOR = new Color(139,69,19);
+	public final static Color WATER_COLOR = new Color(65,105,225);
+	public final static Color SHIP_HIT_COLOR = new Color(128,0,0);
+
 
 	public final static int[] DEFAULT_SHIP_AMOUNT = { 0, 0, 5, 3, 2, 1 };
 	public final static ShipBorderConditions DEFAULT_SHIP_BORDER_CONDITIONS = ShipBorderConditions.TOUCHING_ALLOWED;

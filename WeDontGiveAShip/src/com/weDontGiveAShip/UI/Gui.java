@@ -39,7 +39,8 @@ public class Gui extends JFrame{
 	
 	public void openMatchPanel(Ship[] ships) {
 		clear();
-		MatchPanel matchPanel = new MatchPanel(null, null);
+		MatchPanel matchPanel = new MatchPanel();
+		setSize(600, 1000);
 		add(matchPanel);
 		SwingUtilities.updateComponentTreeUI(Main.gui);
 	}

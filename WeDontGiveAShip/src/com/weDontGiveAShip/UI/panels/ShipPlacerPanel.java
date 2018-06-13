@@ -39,7 +39,7 @@ public class ShipPlacerPanel extends JPanel {
 	JButton undoButton;
 
 	public ShipPlacerPanel() {
-		
+
 		setLayout(new BorderLayout());
 
 		// currentShipPanel
@@ -144,10 +144,10 @@ public class ShipPlacerPanel extends JPanel {
 								}
 
 							}
-							
+
 						}
 						for (Position p : s.getEmptySpacesSurrounding(touchingConditions)) {
-							
+
 							for (int i = 0; i < currentShipLength; i++) {
 
 								Position clickedPosition = new Position(x, y);
@@ -176,7 +176,7 @@ public class ShipPlacerPanel extends JPanel {
 						for (int i = 0; i < currentShipLength; i++) {
 							Position clicked = new Position(x, y);
 							Position p = clicked.add(currentShipDirection.positive.multiply(i));
-							setColor(p.x, p.y, Color.GRAY);
+							setColor(p.x, p.y, Main.SHIP_COLOR);
 
 						}
 						super.onClick(x, y);
@@ -188,9 +188,13 @@ public class ShipPlacerPanel extends JPanel {
 						if (!nextShip()) {
 							commitButton.setEnabled(true);
 							everyShipIsPlaced = true;
+							shipLengthLabel.setText("LENGTH: ~");
+							shipAmountLabel.setText("AMOUNT: ~");
+							
+						} else {
+							shipLengthLabel.setText("LENGTH: " + currentShipLength);
+							shipAmountLabel.setText("AMOUNT: " + currentShipAmount);
 						}
-						shipLengthLabel.setText("LENGTH: " + currentShipLength);
-						shipAmountLabel.setText("AMOUNT: " + currentShipAmount);
 					}
 				}
 			}
@@ -223,7 +227,7 @@ public class ShipPlacerPanel extends JPanel {
 		currentShipLength = previousShipLength.remove(previousShipLength.size() - 1);
 		Ship s = ships.remove(ships.size() - 1);
 		for (Position p : s.getOccupiedSpaces()) {
-			fieldPanel.setColor(p.x, p.y, Color.WHITE);
+			fieldPanel.setColor(p.x, p.y, Main.WATER_COLOR);
 		}
 
 		everyShipIsPlaced = false;
