@@ -22,12 +22,8 @@ public class MatchPanel extends JPanel{
 	private FieldPanel field1, field2;
 	private JTextArea logArea;
 	
-	
-	
 	public MatchPanel() {
 		PlayerCreatorImpl pc = new PlayerCreatorImpl();
-		
-		field1 = new FieldPanel(10, true);
 		
 		field2 = new FieldPanel(10, false);
 //		for(Ship s : p1.getShips()) {
@@ -46,10 +42,6 @@ public class MatchPanel extends JPanel{
 		
 		
 		add(fields, BorderLayout.CENTER);
-		
-		
-		
-		
 	}
 
 }
