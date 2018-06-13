@@ -1,5 +1,6 @@
 package com.weDontGiveAShip.main;
 
+import com.weDontGiveAShip.interfaces.InvalidShipPlacementException;
 import com.weDontGiveAShip.interfaces.Player;
 import com.weDontGiveAShip.interfaces.Position;
 import com.weDontGiveAShip.interfaces.Ship;
@@ -9,28 +10,41 @@ import com.weDontGiveAShip.interfaces.TurnAction;
 
 public class PlayerImpl implements Player{
 
+	private Ship[] ships;
+	
 	@Override
 	public void placeShips(ShipPlacer placer) {
-		// TODO Auto-generated method stub
+		
+		try {
+			placer.setShips(ships);
+		} catch (InvalidShipPlacementException e) {
+			e.printStackTrace();
+		}
 		
 	}
 
 	@Override
 	public void takeTurn(TurnAction turnAction) {
-		// TODO Auto-generated method stub
-		
+//		turnAction.shootTile();
 	}
 
 	@Override
 	public void onEnemyShot(Position position, Tile tile, Ship ship) {
-		// TODO Auto-generated method stub
+		//	Position 
 		
 	}
 
 	@Override
 	public void gameOver(boolean youHaveWon) {
-		// TODO Auto-generated method stub
 		
 	}
 
+	public void setShips(Ship[] ships) {
+		this.ships = ships;
+	}
+	
+	public Ship[] getShips(Ship[] ships) {
+		return ships;
+	}
+	
 }
