@@ -83,7 +83,7 @@ public final class Ship {
 			case NO_DIRECT_TOUCH:
 				Position[] ret = new Position[length * 2 + 2];
 				ret[0] = position.add(direction.negative);
-				ret[1] = position.add(direction.positive.multiply(length + 1));
+				ret[1] = position.add(direction.positive.multiply(length ));
 				for (int i = 0; i < length * 2; i++)
 					ret[i + 2] = position.add(direction.positive.multiply(i / 2)).add(i % 2 == 0 ? direction.other().negative : direction.other().positive);
 				return ret;
@@ -92,7 +92,7 @@ public final class Ship {
 				for (int i = 0; i < 3; i++)
 					ret2[i] = position.add(direction.negative).add(direction.other().positive.multiply(i - 1));
 				for (int i = 0; i < 3; i++)
-					ret2[i + 3] = position.add(direction.positive.multiply(length + 1)).add(direction.other().positive.multiply(i - 1));
+					ret2[i + 3] = position.add(direction.positive.multiply(length )).add(direction.other().positive.multiply(i - 1));
 				for (int i = 0; i < length * 2; i++)
 					ret2[i + 6] = position.add(direction.positive.multiply(i / 2)).add(i % 2 == 0 ? direction.other().negative : direction.other().positive);
 				return ret2;

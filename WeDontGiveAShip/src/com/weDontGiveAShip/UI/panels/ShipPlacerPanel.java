@@ -12,30 +12,31 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import com.weDontGiveAShip.interfaces.Direction;
+import com.weDontGiveAShip.interfaces.GameSettings.ShipBorderConditions;
 import com.weDontGiveAShip.interfaces.Position;
 import com.weDontGiveAShip.interfaces.Ship;
 import com.weDontGiveAShip.main.Main;
 
 public class ShipPlacerPanel extends JPanel {
 
-	public final static int[] DEFAULT_SHIP_AMOUNT = { 0, 0, 5, 3, 2, 1 };
-
 	private int[] shipAmount;
 	private ArrayList<Ship> ships;
 
-	private int currentShipLength;
-	private int currentShipAmount;
-
 	private ArrayList<Integer> previousShipLength;
 	private ArrayList<Integer> previousShipAmount;
-	
+
+	private int currentShipLength;
+	private int currentShipAmount;
 	private Direction currentShipDirection = Direction.HORIZONTAL;
 
-	
 	private FieldPanel fieldPanel;
 	private boolean everyShipIsPlaced;
-	
+
 	JButton commitButton;
+	JButton switchDirectionButton;
+	JLabel shipLengthLabel;
+	JLabel shipAmountLabel;
+	JButton undoButton;
 
 	public ShipPlacerPanel() {
 		setLayout(new BorderLayout());
@@ -44,10 +45,10 @@ public class ShipPlacerPanel extends JPanel {
 		JPanel currentShipPanel = new JPanel();
 		currentShipPanel.setLayout(new FlowLayout());
 
-		JLabel shipLengthLabel = new JLabel("XXX");
-		JLabel shipAmountLabel = new JLabel("XXX");
+		shipLengthLabel = new JLabel("XXX");
+		shipAmountLabel = new JLabel("XXX");
 
-		JButton switchDirectionButton = new JButton(currentShipDirection.toString());
+		switchDirectionButton = new JButton(currentShipDirection.toString());
 		switchDirectionButton.setSize(30, 30);
 		switchDirectionButton.addActionListener(new ActionListener() {
 
@@ -63,10 +64,11 @@ public class ShipPlacerPanel extends JPanel {
 			}
 
 		});
-		
+
 		commitButton = new JButton("Commit");
 		commitButton.setSize(30, 30);
-		commitButton.setEnabled(false);;
+		commitButton.setEnabled(false);
+		;
 		commitButton.addActionListener(new ActionListener() {
 
 			@Override
@@ -78,7 +80,7 @@ public class ShipPlacerPanel extends JPanel {
 
 		});
 
-		JButton undoButton = new JButton("Undo");
+		undoButton = new JButton("Undo");
 		undoButton.setSize(30, 30);
 		undoButton.addActionListener(new ActionListener() {
 
@@ -100,10 +102,12 @@ public class ShipPlacerPanel extends JPanel {
 		currentShipPanel.add(commitButton);
 		add(currentShipPanel, BorderLayout.NORTH);
 
-		shipAmount = DEFAULT_SHIP_AMOUNT;
+		shipAmount = Main.getSettings().getNumberOfShips();
 		currentShipLength = 0;
 		currentShipAmount = shipAmount[0];
+
 		nextShip();
+
 		shipLengthLabel.setText("LENGTH: " + currentShipLength);
 		shipAmountLabel.setText("AMOUNT: " + currentShipAmount);
 
@@ -121,41 +125,90 @@ public class ShipPlacerPanel extends JPanel {
 
 			@Override
 			public void onClick(int x, int y) {
-				if(!everyShipIsPlaced) {
-				for (int i = 0; i < currentShipLength; i++) {
-					Position clicked = new Position(x, y);
-					Position p = clicked.add(currentShipDirection.positive.multiply(i));
-					setColor(p.x, p.y, Color.GRAY);
+				if (!everyShipIsPlaced) {
 
+					boolean occupied = false;
+					ShipBorderConditions touchingConditions = Main.getSettings().getShipBorderConditions();
+					for (Ship s : ships) {
+
+						for (Position p : s.getOccupiedSpaces()) {
+
+							for (int i = 0; i < currentShipLength; i++) {
+
+								Position clickedPosition = new Position(x, y);
+								Position shipPosition = clickedPosition.add(currentShipDirection.positive.multiply(i));
+
+								if (p.equals(shipPosition)) {
+									occupied = true;
+								}
+
+							}
+							
+						}
+						for (Position p : s.getEmptySpacesSurrounding(ShipBorderConditions.NO_DIRECT_AND_DIAGONAL_TOUCH)) {
+							
+							for (int i = 0; i < currentShipLength; i++) {
+
+								Position clickedPosition = new Position(x, y);
+								Position shipPosition = clickedPosition.add(currentShipDirection.positive.multiply(i));
+
+								if (p.equals(shipPosition)) {
+									occupied = true;
+								}
+
+							}
+
+						}
+					}
+
+					boolean outOfBounds = false;
+					for (int i = 0; i < currentShipLength; i++) {
+
+						Position clickedPosition = new Position(x, y);
+						Position p = clickedPosition.add(currentShipDirection.positive.multiply(i));
+
+						if (p.x >= 10 || p.x < 0 || p.y >= 10 || p.y < 0)
+							outOfBounds = true;
+					}
+
+					if (!occupied && !outOfBounds) {
+						for (int i = 0; i < currentShipLength; i++) {
+							Position clicked = new Position(x, y);
+							Position p = clicked.add(currentShipDirection.positive.multiply(i));
+							setColor(p.x, p.y, Color.GRAY);
+
+						}
+						super.onClick(x, y);
+
+						ships.add(new Ship(new Position(x, y), currentShipDirection, currentShipLength));
+						previousShipAmount.add(currentShipAmount);
+						previousShipLength.add(currentShipLength);
+
+						if (!nextShip()) {
+							commitButton.setEnabled(true);
+							everyShipIsPlaced = true;
+						}
+						shipLengthLabel.setText("LENGTH: " + currentShipLength);
+						shipAmountLabel.setText("AMOUNT: " + currentShipAmount);
+					}
 				}
-				super.onClick(x, y);
-				
-				ships.add(new Ship(new Position(x, y), currentShipDirection, currentShipLength));
-				previousShipAmount.add(currentShipAmount);
-				previousShipLength.add(currentShipLength);
-
-				if (!nextShip()) {
-					commitButton.setEnabled(true);
-					everyShipIsPlaced = true;
-				}
-				shipLengthLabel.setText("LENGTH: " + currentShipLength);
-				shipAmountLabel.setText("AMOUNT: " + currentShipAmount);
-
-			}
 			}
 
 		}, BorderLayout.CENTER);
-		
+
 	}
 
 	private boolean nextShip() {
 		currentShipAmount--;
 		if (currentShipAmount <= 0) {
+
 			currentShipLength++;
-			if (currentShipLength < shipAmount.length) {
-				currentShipAmount = shipAmount[currentShipLength];
+
+			if (currentShipLength - 1 < shipAmount.length) {
+				currentShipAmount = shipAmount[currentShipLength - 1];
 				if (currentShipAmount == 0) {
-					nextShip();
+					if (!nextShip())
+						return false;
 				}
 				return true;
 			} else
@@ -165,12 +218,13 @@ public class ShipPlacerPanel extends JPanel {
 	}
 
 	private void undo() {
-		currentShipAmount = previousShipAmount.remove(previousShipAmount.size()-1);
-		currentShipLength = previousShipLength.remove(previousShipLength.size()-1);
+		currentShipAmount = previousShipAmount.remove(previousShipAmount.size() - 1);
+		currentShipLength = previousShipLength.remove(previousShipLength.size() - 1);
 		Ship s = ships.remove(ships.size() - 1);
 		for (Position p : s.getOccupiedSpaces()) {
 			fieldPanel.setColor(p.x, p.y, Color.WHITE);
 		}
+
 		everyShipIsPlaced = false;
 		commitButton.setEnabled(false);
 
