@@ -8,8 +8,10 @@ import java.awt.GridLayout;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
+import com.weDontGiveAShip.interfaces.Player;
 import com.weDontGiveAShip.interfaces.Position;
 import com.weDontGiveAShip.interfaces.Ship;
+import com.weDontGiveAShip.main.AI;
 import com.weDontGiveAShip.main.Main;
 import com.weDontGiveAShip.main.PlayerCreatorImpl;
 import com.weDontGiveAShip.main.PlayerImpl;
@@ -24,8 +26,6 @@ public class MatchPanel extends JPanel{
 	
 	public MatchPanel() {
 		PlayerCreatorImpl pc = new PlayerCreatorImpl();
-		
-		
 		
 		field1 = new FieldPanel(10, true);
 		

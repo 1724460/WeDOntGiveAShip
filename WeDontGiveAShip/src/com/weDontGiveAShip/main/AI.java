@@ -75,6 +75,7 @@ public class AI extends PlayerImpl {
 
 		try {
 			hitField = turnAction.shootTile(shootAtPosition);
+			
 		} catch (InvalidActionException e) {
 			e.printStackTrace();
 			hitField = null;
@@ -83,13 +84,13 @@ public class AI extends PlayerImpl {
 		// Hit a ship
 		if (hitField == Tile.SHIP) {
 
-			// Hit a already known ship
-			if (hitAlreadyKnownShip(shootAtPosition)) {
-
-				// Hit a previously unknown ship
-			} else {
-				targetQueue.add(new TargettedShip(shootAtPosition));
-			}
+//			// Hit a already known ship
+//			if (hitAlreadyKnownShip(shootAtPosition)) {
+//
+//				// Hit a previously unknown ship
+//			} else {
+//				targetQueue.add(new TargettedShip(shootAtPosition));
+//			}
 
 			// Successfully destroyed a ship
 		} else if (hitField == Tile.SHIP_KILL) {
@@ -101,44 +102,61 @@ public class AI extends PlayerImpl {
 
 	}
 
+	
+	//	Fürs erste einfach nur auf random Positions schießen
+	List<Position> allPositionsWeAlreadyShotAt = new ArrayList<Position>();
+	
 	private Position getShootAtPosition() {
-		Position shootAt = null;
-
-		int predictionLocation;
+		Random rand = new Random();
+		Position position;
 		
-		AIPrediction prevPrediction = lastPredictions.peek();
+		do {
+			position = new Position(rand.nextInt(PLAYFIELD_SIZE), rand.nextInt(PLAYFIELD_SIZE));
+			
+		}while(allPositionsWeAlreadyShotAt.contains(position));
 		
-		if (currentTarget == null) {
-			// random shot auf das feld
-			
-			
-		} else {
-			
-			if (prevPrediction.success) {
-				
-				if (prevPrediction.location == AIPrediction.UP) {
-					// predictionLocation =
-
-				} else if (prevPrediction.location == AIPrediction.RIGHT) {
-
-				} else if (prevPrediction.location == AIPrediction.DOWN) {
-
-				} else if (prevPrediction.location == AIPrediction.LEFT) {
-
-				}
-				
-				
-			//	did not hit the ship last time
-			}else {
-				
-				//	hier shot in der nähe machen
-				
-				
-			}
-
-		}
-
-		return shootAt;
+		
+		return position;
+		
+		
+		
+//		Position shootAt = null;
+//
+//		int predictionLocation;
+//		
+//		AIPrediction prevPrediction = lastPredictions.peek();
+//		
+//		if (currentTarget == null) {
+//			// random shot auf das feld
+//			
+//			
+//		} else {
+//			
+//			if (prevPrediction.success) {
+//				
+//				if (prevPrediction.location == AIPrediction.UP) {
+//					// predictionLocation =
+//
+//				} else if (prevPrediction.location == AIPrediction.RIGHT) {
+//
+//				} else if (prevPrediction.location == AIPrediction.DOWN) {
+//
+//				} else if (prevPrediction.location == AIPrediction.LEFT) {
+//
+//				}
+//				
+//				
+//			//	did not hit the ship last time
+//			}else {
+//				
+//				//	hier shot in der nähe machen
+//				
+//				
+//			}
+//
+//		}
+//
+//		return shootAt;
 	}
 
 	private boolean hitAlreadyKnownShip(Position shootAtPosition) {
