@@ -4,6 +4,7 @@ package com.weDontGiveAShip.UI;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
+import com.weDontGiveAShip.UI.panels.MatchPanel;
 import com.weDontGiveAShip.UI.panels.ShipPlacerPanel;
 import com.weDontGiveAShip.interfaces.Ship;
 import com.weDontGiveAShip.main.Main;
@@ -38,6 +39,8 @@ public class Gui extends JFrame{
 	
 	public void openMatchPanel(Ship[] ships) {
 		clear();
+		MatchPanel matchPanel = new MatchPanel(null, null);
+		add(matchPanel);
 		SwingUtilities.updateComponentTreeUI(Main.gui);
 	}
 
