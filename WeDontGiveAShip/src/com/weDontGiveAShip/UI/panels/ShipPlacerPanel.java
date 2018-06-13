@@ -39,6 +39,7 @@ public class ShipPlacerPanel extends JPanel {
 	JButton undoButton;
 
 	public ShipPlacerPanel() {
+		
 		setLayout(new BorderLayout());
 
 		// currentShipPanel
@@ -145,7 +146,7 @@ public class ShipPlacerPanel extends JPanel {
 							}
 							
 						}
-						for (Position p : s.getEmptySpacesSurrounding(ShipBorderConditions.NO_DIRECT_AND_DIAGONAL_TOUCH)) {
+						for (Position p : s.getEmptySpacesSurrounding(touchingConditions)) {
 							
 							for (int i = 0; i < currentShipLength; i++) {
 
