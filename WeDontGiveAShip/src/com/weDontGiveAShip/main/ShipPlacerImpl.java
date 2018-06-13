@@ -8,8 +8,7 @@ public class ShipPlacerImpl implements ShipPlacer{
 
 	@Override
 	public void setShips(Ship[] ships) throws InvalidShipPlacementException {
-		// TODO Auto-generated method stub
-		
+		//	Schiffe hier im Match-Gui zeichnen usw.
 	}
 
 }
