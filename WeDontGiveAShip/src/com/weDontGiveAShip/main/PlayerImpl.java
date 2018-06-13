@@ -43,7 +43,7 @@ public class PlayerImpl implements Player{
 		this.ships = ships;
 	}
 	
-	public Ship[] getShips(Ship[] ships) {
+	public Ship[] getShips() {
 		return ships;
 	}
 	
