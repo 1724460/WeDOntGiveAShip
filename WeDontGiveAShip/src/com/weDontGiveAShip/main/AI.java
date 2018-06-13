@@ -115,7 +115,7 @@ public class AI extends PlayerImpl {
 			
 		}while(allPositionsWeAlreadyShotAt.contains(position));
 		
-		
+		allPositionsWeAlreadyShotAt.add(position);
 		return position;
 		
 		
