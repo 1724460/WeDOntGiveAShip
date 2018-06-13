@@ -65,6 +65,8 @@ public class AI extends PlayerImpl {
 	Queue<TargettedShip> targetQueue = new LinkedList<TargettedShip>();
 	Queue<AIPrediction> lastPredictions = new LinkedList<AIPrediction>();
 
+	TargettedShip currentTarget = null;
+
 	@Override
 	public void takeTurn(TurnAction turnAction) {
 		Position shootAtPosition = getShootAtPosition();
@@ -103,15 +105,16 @@ public class AI extends PlayerImpl {
 		Position shootAt = null;
 
 		int predictionLocation;
-
-		if (targetQueue.isEmpty()) {
-			// random shot
+		
+		AIPrediction prevPrediction = lastPredictions.peek();
+		
+		if (currentTarget == null) {
+			// random shot auf das feld
+			
+			
 		} else {
-			TargettedShip target = targetQueue.peek();
-			AIPrediction prevPrediction = lastPredictions.peek();
-
+			
 			if (prevPrediction.success) {
-
 				
 				if (prevPrediction.location == AIPrediction.UP) {
 					// predictionLocation =
@@ -128,7 +131,7 @@ public class AI extends PlayerImpl {
 			//	did not hit the ship last time
 			}else {
 				
-				//	shot in der nähe
+				//	hier shot in der nähe machen
 				
 				
 			}
