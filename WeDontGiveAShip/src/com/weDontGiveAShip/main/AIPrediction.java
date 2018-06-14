@@ -1,6 +1,6 @@
 package com.weDontGiveAShip.main;
 
-import com.weDontGiveAShip.interfaces.Position;
+import se1.schiffeVersenken.interfaces.util.Position;
 
 public class AIPrediction {
 

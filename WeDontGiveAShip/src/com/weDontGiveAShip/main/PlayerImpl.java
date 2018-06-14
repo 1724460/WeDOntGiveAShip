@@ -1,12 +1,12 @@
 package com.weDontGiveAShip.main;
 
-import com.weDontGiveAShip.interfaces.InvalidShipPlacementException;
-import com.weDontGiveAShip.interfaces.Player;
-import com.weDontGiveAShip.interfaces.Position;
-import com.weDontGiveAShip.interfaces.Ship;
-import com.weDontGiveAShip.interfaces.ShipPlacer;
-import com.weDontGiveAShip.interfaces.Tile;
-import com.weDontGiveAShip.interfaces.TurnAction;
+import se1.schiffeVersenken.interfaces.Player;
+import se1.schiffeVersenken.interfaces.Ship;
+import se1.schiffeVersenken.interfaces.ShipPlacer;
+import se1.schiffeVersenken.interfaces.Tile;
+import se1.schiffeVersenken.interfaces.TurnAction;
+import se1.schiffeVersenken.interfaces.exception.shipPlacement.InvalidShipPlacementException;
+import se1.schiffeVersenken.interfaces.util.Position;
 
 public class PlayerImpl implements Player{
 

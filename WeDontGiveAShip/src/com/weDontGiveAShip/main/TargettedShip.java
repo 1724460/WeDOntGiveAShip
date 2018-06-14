@@ -3,7 +3,7 @@ package com.weDontGiveAShip.main;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.weDontGiveAShip.interfaces.Position;
+import se1.schiffeVersenken.interfaces.util.Position;
 
 public class TargettedShip {
 

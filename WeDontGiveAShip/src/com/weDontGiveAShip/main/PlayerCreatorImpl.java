@@ -1,8 +1,8 @@
 package com.weDontGiveAShip.main;
 
-import com.weDontGiveAShip.interfaces.GameSettings;
-import com.weDontGiveAShip.interfaces.Player;
-import com.weDontGiveAShip.interfaces.PlayerCreator;
+import se1.schiffeVersenken.interfaces.GameSettings;
+import se1.schiffeVersenken.interfaces.Player;
+import se1.schiffeVersenken.interfaces.PlayerCreator;
 
 public class PlayerCreatorImpl implements PlayerCreator{
 

@@ -11,11 +11,12 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import com.weDontGiveAShip.interfaces.Direction;
-import com.weDontGiveAShip.interfaces.GameSettings.ShipBorderConditions;
-import com.weDontGiveAShip.interfaces.Position;
-import com.weDontGiveAShip.interfaces.Ship;
 import com.weDontGiveAShip.main.Main;
+
+import se1.schiffeVersenken.interfaces.GameSettings.ShipBorderConditions;
+import se1.schiffeVersenken.interfaces.Ship;
+import se1.schiffeVersenken.interfaces.util.Direction;
+import se1.schiffeVersenken.interfaces.util.Position;
 
 public class ShipPlacerPanel extends JPanel {
 
@@ -69,7 +70,7 @@ public class ShipPlacerPanel extends JPanel {
 		commitButton = new JButton("Commit");
 		commitButton.setSize(30, 30);
 		commitButton.setEnabled(false);
-		;
+		
 		commitButton.addActionListener(new ActionListener() {
 
 			@Override
@@ -233,6 +234,10 @@ public class ShipPlacerPanel extends JPanel {
 		everyShipIsPlaced = false;
 		commitButton.setEnabled(false);
 
+	}
+	
+	public Ship[] getShips(){
+		return ships.toArray(new Ship[ships.size()]);
 	}
 
 }

@@ -5,13 +5,17 @@ import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
 import com.weDontGiveAShip.UI.panels.MatchPanel;
+import com.weDontGiveAShip.UI.panels.MatchPanelListener;
 import com.weDontGiveAShip.UI.panels.ShipPlacerPanel;
-import com.weDontGiveAShip.interfaces.Ship;
 import com.weDontGiveAShip.main.Main;
+
+import se1.schiffeVersenken.interfaces.Ship;
 
 public class Gui extends JFrame{
 
 	private static final long serialVersionUID = 1L;
+
+	private boolean inGame;
 	
 	public Gui() {
 		super("Battleship by We Don't Give A Ship");
@@ -23,6 +27,7 @@ public class Gui extends JFrame{
 		drawMainMenu();
 		
 		setVisible(true);
+		inGame = false;
 	}
 
 	private void drawMainMenu() {
@@ -30,9 +35,11 @@ public class Gui extends JFrame{
 		add(mainMenu);
 	}
 
+	public static ShipPlacerPanel shipPlacer;
+	
 	public void openShipPlacer() {
 		clear();
-		ShipPlacerPanel shipPlacer = new ShipPlacerPanel();
+		shipPlacer = new ShipPlacerPanel();
 		add(shipPlacer);
 		SwingUtilities.updateComponentTreeUI(Main.gui);
 	}
@@ -43,11 +50,18 @@ public class Gui extends JFrame{
 		setSize(600, 1000);
 		add(matchPanel);
 		SwingUtilities.updateComponentTreeUI(Main.gui);
+		
+		inGame = true;
+		matchPanel.addMouseListener(new MatchPanelListener());
 	}
 
 	public static void clear(){
 		Main.gui.getContentPane().removeAll();
 		Main.gui.repaint();
+	}
+	
+	public boolean isInGame(){
+		return inGame;
 	}
 	
 }

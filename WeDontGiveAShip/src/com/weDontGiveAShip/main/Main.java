@@ -3,9 +3,10 @@ package com.weDontGiveAShip.main;
 import java.awt.Color;
 
 import com.weDontGiveAShip.UI.Gui;
-import com.weDontGiveAShip.interfaces.GameSettings;
-import com.weDontGiveAShip.interfaces.GameSettings.ShipBorderConditions;
-import com.weDontGiveAShip.interfaces.GameSettingsBuilder;
+
+import se1.schiffeVersenken.interfaces.GameSettings;
+import se1.schiffeVersenken.interfaces.GameSettings.ShipBorderConditions;
+import se1.schiffeVersenken.interfaces.GameSettingsBuilder;
 
 public class Main {
 

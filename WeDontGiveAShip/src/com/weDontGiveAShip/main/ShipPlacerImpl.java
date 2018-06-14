@@ -1,11 +1,13 @@
 package com.weDontGiveAShip.main;
 
-import com.weDontGiveAShip.interfaces.InvalidShipPlacementException;
-import com.weDontGiveAShip.interfaces.Ship;
-import com.weDontGiveAShip.interfaces.ShipPlacer;
+import se1.schiffeVersenken.interfaces.Ship;
+import se1.schiffeVersenken.interfaces.ShipPlacer;
+import se1.schiffeVersenken.interfaces.exception.shipPlacement.InvalidShipPlacementException;
 
 public class ShipPlacerImpl implements ShipPlacer{
 
+	
+	
 	@Override
 	public void setShips(Ship[] ships) throws InvalidShipPlacementException {
 		//	Schiffe hier im Match-Gui zeichnen usw.

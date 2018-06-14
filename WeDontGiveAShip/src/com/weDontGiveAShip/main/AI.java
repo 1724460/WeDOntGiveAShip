@@ -10,14 +10,15 @@ import java.util.Random;
 import javax.swing.JFrame;
 
 import com.weDontGiveAShip.UI.panels.FieldPanel;
-import com.weDontGiveAShip.interfaces.Direction;
-import com.weDontGiveAShip.interfaces.InvalidActionException;
-import com.weDontGiveAShip.interfaces.InvalidShipPlacementException;
-import com.weDontGiveAShip.interfaces.Position;
-import com.weDontGiveAShip.interfaces.Ship;
-import com.weDontGiveAShip.interfaces.ShipPlacer;
-import com.weDontGiveAShip.interfaces.Tile;
-import com.weDontGiveAShip.interfaces.TurnAction;
+
+import se1.schiffeVersenken.interfaces.Ship;
+import se1.schiffeVersenken.interfaces.ShipPlacer;
+import se1.schiffeVersenken.interfaces.Tile;
+import se1.schiffeVersenken.interfaces.TurnAction;
+import se1.schiffeVersenken.interfaces.exception.action.InvalidActionException;
+import se1.schiffeVersenken.interfaces.exception.shipPlacement.InvalidShipPlacementException;
+import se1.schiffeVersenken.interfaces.util.Direction;
+import se1.schiffeVersenken.interfaces.util.Position;
 
 public class AI extends PlayerImpl {
 
@@ -34,6 +35,8 @@ public class AI extends PlayerImpl {
 	List<Position> alreadyTakenPositions = new ArrayList<Position>();
 	static FieldPanel panel;
 
+	public static Ship[] ships;
+	
 	public static void main(String args[]) {
 		JFrame f = new JFrame();
 

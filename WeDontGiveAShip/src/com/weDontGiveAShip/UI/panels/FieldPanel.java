@@ -80,7 +80,7 @@ public class FieldPanel extends JPanel {
 		buttons[x][y].setBackground(color);
 	}
 	
-	public void Update() {
+	public void update() {
 		
 	}
 
