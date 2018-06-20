@@ -77,6 +77,7 @@ public class ShipPlacerPanel extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				Ship[] s = new Ship[ships.size()];
 				ships.toArray(s);
+				
 				Main.gui.openMatchPanel(s);
 			}
 
@@ -181,7 +182,7 @@ public class ShipPlacerPanel extends JPanel {
 
 						}
 						super.onClick(x, y);
-
+						
 						ships.add(new Ship(new Position(x, y), currentShipDirection, currentShipLength));
 						previousShipAmount.add(currentShipAmount);
 						previousShipLength.add(currentShipLength);

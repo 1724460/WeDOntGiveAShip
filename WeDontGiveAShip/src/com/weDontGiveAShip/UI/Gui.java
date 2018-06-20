@@ -5,7 +5,6 @@ import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
 import com.weDontGiveAShip.UI.panels.MatchPanel;
-import com.weDontGiveAShip.UI.panels.MatchPanelListener;
 import com.weDontGiveAShip.UI.panels.ShipPlacerPanel;
 import com.weDontGiveAShip.main.Main;
 
@@ -46,13 +45,12 @@ public class Gui extends JFrame{
 	
 	public void openMatchPanel(Ship[] ships) {
 		clear();
-		MatchPanel matchPanel = new MatchPanel();
+		MatchPanel matchPanel = new MatchPanel(ships);
 		setSize(600, 1000);
 		add(matchPanel);
 		SwingUtilities.updateComponentTreeUI(Main.gui);
 		
 		inGame = true;
-		matchPanel.addMouseListener(new MatchPanelListener());
 	}
 
 	public static void clear(){

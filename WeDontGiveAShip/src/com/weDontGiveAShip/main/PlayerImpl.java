@@ -1,6 +1,8 @@
 package com.weDontGiveAShip.main;
 
+import se1.schiffeVersenken.interfaces.GameSettings;
 import se1.schiffeVersenken.interfaces.Player;
+import se1.schiffeVersenken.interfaces.PlayerCreator;
 import se1.schiffeVersenken.interfaces.Ship;
 import se1.schiffeVersenken.interfaces.ShipPlacer;
 import se1.schiffeVersenken.interfaces.Tile;
@@ -8,7 +10,7 @@ import se1.schiffeVersenken.interfaces.TurnAction;
 import se1.schiffeVersenken.interfaces.exception.shipPlacement.InvalidShipPlacementException;
 import se1.schiffeVersenken.interfaces.util.Position;
 
-public class PlayerImpl implements Player{
+public class PlayerImpl implements Player, PlayerCreator{
 
 	private Ship[] ships;
 	
@@ -45,6 +47,15 @@ public class PlayerImpl implements Player{
 	
 	public Ship[] getShips() {
 		return ships;
+	}
+
+	@Override
+	public Player createPlayer(GameSettings settings, Class<? extends PlayerCreator> otherPlayer) {
+		return new PlayerImpl();
+	}
+
+	public void turn() {
+				
 	}
 	
 }

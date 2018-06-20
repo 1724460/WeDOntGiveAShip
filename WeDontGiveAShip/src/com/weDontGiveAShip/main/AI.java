@@ -11,6 +11,10 @@ import javax.swing.JFrame;
 
 import com.weDontGiveAShip.UI.panels.FieldPanel;
 
+import se1.schiffeVersenken.interfaces.GameSettings;
+import se1.schiffeVersenken.interfaces.PlayableAI;
+import se1.schiffeVersenken.interfaces.Player;
+import se1.schiffeVersenken.interfaces.PlayerCreator;
 import se1.schiffeVersenken.interfaces.Ship;
 import se1.schiffeVersenken.interfaces.ShipPlacer;
 import se1.schiffeVersenken.interfaces.Tile;
@@ -20,7 +24,8 @@ import se1.schiffeVersenken.interfaces.exception.shipPlacement.InvalidShipPlacem
 import se1.schiffeVersenken.interfaces.util.Direction;
 import se1.schiffeVersenken.interfaces.util.Position;
 
-public class AI extends PlayerImpl {
+@PlayableAI("We Don't Give A Ship's AI")
+public class AI extends PlayerImpl implements PlayerCreator {
 
 	public static final int SHIP_COUNT_1 = 0;
 	public static final int SHIP_COUNT_2 = 5;
@@ -288,6 +293,11 @@ public class AI extends PlayerImpl {
 		}
 
 		return direction;
+	}
+
+	@Override
+	public Player createPlayer(GameSettings settings, Class<? extends PlayerCreator> otherPlayer) {
+		return new AI();
 	}
 
 }
