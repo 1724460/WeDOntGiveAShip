@@ -24,7 +24,7 @@ public class Gui extends JFrame{
 		setSize(600, 800);
 		setResizable(false);
 		setLocationRelativeTo(null);
-		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		drawMainMenu();
 		

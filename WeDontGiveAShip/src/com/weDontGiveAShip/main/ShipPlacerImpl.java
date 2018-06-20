@@ -16,9 +16,14 @@ import se1.schiffeVersenken.interfaces.util.Position;
 public class ShipPlacerImpl implements ShipPlacer {
 
 	
-	
+	public static int times = 0;
 	@Override
 	public void setShips(Ship[] ships) throws InvalidShipPlacementException {
+		times++;
+		
+		if(times == 1)
+			return;
+				
 		
 		JFrame debug = new JFrame();
 		

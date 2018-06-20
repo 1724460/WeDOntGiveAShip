@@ -6,10 +6,11 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GridLayout;
 import java.util.Arrays;
-import java.util.List;
+import java.util.Collections;
 
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
+import javax.swing.SwingUtilities;
 
 import com.weDontGiveAShip.main.AI;
 import com.weDontGiveAShip.main.Main;
@@ -57,7 +58,16 @@ public class MatchPanel extends JPanel{
 
 			@Override
 			public void onClick(int x, int y) {
+				if(PlayerImpl.alreadyShotOnPositions.contains(new Position(x, y))) {
+					System.out.println("Du kannst nicht nochmal auf dieses Feld schießen!");
+					return;
+				}
+				
 				p1.turn(x, y);
+				
+				//	AI schießt jetzt
+//				p2.turn();
+				
 			}
 
 		};
@@ -93,7 +103,7 @@ public class MatchPanel extends JPanel{
 		//TODO: DEBUG MSG
 		System.out.println(class1);
 		
-		if(class1.equals(PlayerImpl.class)) {
+		if(class1.equals(AI.class)) {
 			Ship[] ships = PlayerImpl.ships;
 			
 			for (int i = 0; i < ships.length; i++) {
@@ -134,6 +144,69 @@ public class MatchPanel extends JPanel{
 			return Tile.WATER;
 		}
 		
+	}
+	
+	public static Ship getHitShip(Class<? extends Player> class1, int x, int y) {
+		Ship[] ships;
+		
+		if(class1.equals(AI.class)) {
+			ships = AI.ships;
+		}else {
+			ships = PlayerImpl.ships;
+		}
+			
+		for(int i = 0; i < ships.length; i++) {
+			for(Position pos : ships[i].getOccupiedSpaces()) {
+				if(pos.equals(new Position(x, y))) {
+					return ships[i];
+				}
+			}
+		}
+		
+		return null;
+	}
+	
+	public static final int PLAYFIELD_SIZE = 10;
+	
+	public void redraw() {
+		Ship[] ships = AI.ships;
+
+		for(int y = 0; y < PLAYFIELD_SIZE; y++) {
+			for(int x = 0; x < PLAYFIELD_SIZE; x++) {
+				if(PlayerImpl.alreadyShotOnPositions.contains(new Position(x, y))) {
+					Main.gui.matchPanel.field1.setColor(x, y, Color.GRAY);
+				}
+			}
+		}
+		
+		for(Ship ship : ships) {
+			Color color;
+			
+			if(ship.isSunk()) {
+				color = Color.BLACK;
+				
+			}else {
+				color = Color.RED;
+			}	
+			
+			for(Position pos : ship.getOccupiedSpaces()) {
+				if(PlayerImpl.alreadyShotOnPositions.contains(pos)) {
+					Main.gui.matchPanel.field1.setColor(pos.x, pos.y, color);
+				}
+			}
+		}
+		
+		SwingUtilities.updateComponentTreeUI(Main.gui.matchPanel);
+		Main.gui.matchPanel.repaint();
+		SwingUtilities.updateComponentTreeUI(Main.gui);
+		Main.gui.repaint();
+		
+		
+		
+		System.out.println("---");
+		Arrays.asList(AI.ships).forEach(ship -> System.out.println(ship));
+		System.out.println("---");
+		System.out.println(PlayerImpl.alreadyShotOnPositions);
 	}
 	
 }

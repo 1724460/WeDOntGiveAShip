@@ -65,6 +65,8 @@ public class AI extends PlayerImpl implements PlayerCreator {
 		} catch (InvalidShipPlacementException e) {
 			e.printStackTrace();
 		}
+		
+		this.ships = ships;
 	}
 
 	// A list, that contains every Position the AI initially hit and is currently

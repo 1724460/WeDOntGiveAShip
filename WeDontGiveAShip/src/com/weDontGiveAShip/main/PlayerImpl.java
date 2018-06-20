@@ -1,6 +1,7 @@
 package com.weDontGiveAShip.main;
 
-import java.awt.Color;
+import java.util.HashSet;
+import java.util.Set;
 
 import com.weDontGiveAShip.UI.panels.MatchPanel;
 
@@ -17,6 +18,7 @@ import se1.schiffeVersenken.interfaces.util.Position;
 public class PlayerImpl implements Player, PlayerCreator{
 
 	public static Ship[] ships;
+	public static Set<Position> alreadyShotOnPositions = new HashSet<Position>();
 	
 	@Override
 	public void placeShips(ShipPlacer placer) {
@@ -37,37 +39,30 @@ public class PlayerImpl implements Player, PlayerCreator{
 		if(hitTile == Tile.WATER) {
 			System.out.println("Leider kein Treffer...");
 			
-			Main.gui.matchPanel.field1.setColor(x, y, Color.GRAY);
+//			Main.gui.matchPanel.field1.setColor(x, y, Color.GRAY);
 			
 		}else if(hitTile == Tile.SHIP) {
 			System.out.println("Treffer!");
 			
-			Main.gui.matchPanel.field1.setColor(x, y, Color.RED);
+//			Main.gui.matchPanel.field1.setColor(x, y, Color.RED);
 
 		}else if(hitTile == Tile.SHIP_KILL) {
 			System.out.println("Treffer, versenkt!");
-			Ship hitShip = getHitShip(x, y);
-		
-			for(Position pos : hitShip.getOccupiedSpaces()) {
-				Main.gui.matchPanel.field1.setColor(pos.x, pos.y, Color.BLACK);
-			}
+//			Ship hitShip = MatchPanel.getHitShip(AI.class, x, y);
+//		
+//			for(Position pos : hitShip.getOccupiedSpaces()) {
+//				Main.gui.matchPanel.field1.setColor(pos.x, pos.y, Color.BLACK);
+//			}
 			
 			
 		}
 		
+		alreadyShotOnPositions.add(new Position(x, y));
 		
+		Main.gui.matchPanel.redraw();
 	}
 	
-	private Ship getHitShip(int x, int y) {
-		for(int i = 0; i < ships.length; i++) {
-			for(Position pos : ships[i].getOccupiedSpaces()) {
-				if(pos.equals(new Position(x, y))) {
-					return ships[i];
-				}
-			}
-		}
-		return null;
-	}
+
 
 	@Override
 	public void takeTurn(TurnAction turnAction) {
