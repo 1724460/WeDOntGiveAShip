@@ -222,12 +222,12 @@ public class AI extends PlayerImpl implements PlayerCreator {
 			shipList.add(generateShip(5));
 		}
 
-		// zeichnet auf den test frame hier in der klasse (kann später gelöscht werden)
-		for (int i = 0; i < shipList.size(); i++) {
-			for (Position position : shipList.get(i).getOccupiedSpaces()) {
-				panel.setColor(position.x, position.y, Color.RED);
-			}
-		}
+//		// zeichnet auf den test frame hier in der klasse (kann später gelöscht werden)
+//		for (int i = 0; i < shipList.size(); i++) {
+//			for (Position position : shipList.get(i).getOccupiedSpaces()) {
+//				panel.setColor(position.x, position.y, Color.RED);
+//			}
+//		}
 
 		/*
 		 * Hier könnte man noch einfügen, dass je nach Spielregeln, re-generated wird.
@@ -270,14 +270,16 @@ public class AI extends PlayerImpl implements PlayerCreator {
 		int x, y;
 
 		if (direction == Direction.HORIZONTAL) {
-			x = rand.nextInt(PLAYFIELD_SIZE - 1);
-			y = rand.nextInt(PLAYFIELD_SIZE - 1 - size);
-
-		} else {
 			x = rand.nextInt(PLAYFIELD_SIZE - 1 - size);
 			y = rand.nextInt(PLAYFIELD_SIZE - 1);
+
+		} else {
+			x = rand.nextInt(PLAYFIELD_SIZE - 1 );
+			y = rand.nextInt(PLAYFIELD_SIZE - 1 - size);
 		}
 
+		System.out.println("Neues AI Schiff ("+size+"): "+x+" "+y);
+		
 		return new Position(x, y);
 	}
 

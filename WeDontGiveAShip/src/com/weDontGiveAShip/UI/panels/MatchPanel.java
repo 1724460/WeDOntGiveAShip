@@ -5,7 +5,8 @@ package com.weDontGiveAShip.UI.panels;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
+import java.util.Arrays;
+import java.util.List;
 
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
@@ -14,14 +15,12 @@ import com.weDontGiveAShip.main.AI;
 import com.weDontGiveAShip.main.Main;
 import com.weDontGiveAShip.main.PlayerImpl;
 import com.weDontGiveAShip.main.ShipPlacerImpl;
+import com.weDontGiveAShip.main.TurnActionImpl;
 
-import se1.schiffeVersenken.interfaces.PlayerCreator;
+import se1.schiffeVersenken.interfaces.Player;
 import se1.schiffeVersenken.interfaces.Ship;
 import se1.schiffeVersenken.interfaces.ShipPlacer;
 import se1.schiffeVersenken.interfaces.Tile;
-import se1.schiffeVersenken.interfaces.TurnAction;
-import se1.schiffeVersenken.interfaces.GameSettings.ShipBorderConditions;
-import se1.schiffeVersenken.interfaces.exception.action.InvalidActionException;
 import se1.schiffeVersenken.interfaces.util.Position;
 
 public class MatchPanel extends JPanel{
@@ -29,11 +28,14 @@ public class MatchPanel extends JPanel{
 	private static final long serialVersionUID = 1L;
 	
 	private JPanel fields;
-	private FieldPanel field1, field2;
+	public FieldPanel field1, field2;
 	private JTextArea logArea;
 	
-	PlayerImpl p1;
-	AI p2;
+	public PlayerImpl p1;
+	public AI p2;
+	
+	TurnActionImpl p1TurnAction;
+	TurnActionImpl p2TurnAction = new TurnActionImpl();
 	
 	public MatchPanel(Ship[] playerShips) {
 		ShipPlacer shipPlacer = new ShipPlacerImpl();
@@ -55,21 +57,7 @@ public class MatchPanel extends JPanel{
 
 			@Override
 			public void onClick(int x, int y) {
-				System.out.println("Du hast auf +"+x+","+y+" geschossen!");
-				
-				super.setColor(x,y, Color.RED);
-				
-				p1.turn();
-				
-//				p1.takeTurn(new TurnAction() {
-//					
-//					@Override
-//					protected Tile shootTile0(Position position) throws InvalidActionException {
-//						// TODO Auto-generated method stub
-//						return null;
-//					}
-//				});
-				
+				p1.turn(x, y);
 			}
 
 		};
@@ -97,6 +85,55 @@ public class MatchPanel extends JPanel{
 		fields.add(field2);
 		
 		add(fields, BorderLayout.CENTER);
+	}
+
+	public static Tile whatDidIHit(Class<? extends Player> class1, int x, int y) {
+		Position pos = new Position(x, y);
+		
+		//TODO: DEBUG MSG
+		System.out.println(class1);
+		
+		if(class1.equals(PlayerImpl.class)) {
+			Ship[] ships = PlayerImpl.ships;
+			
+			for (int i = 0; i < ships.length; i++) {
+				for (Position position : ships[i].getOccupiedSpaces()) {
+					if(position.equals(pos)) {
+						ships[i].takeHit();
+						
+						if(ships[i].isSunk()) {
+							return Tile.SHIP_KILL;
+						}else {
+							return Tile.SHIP;
+						}
+						
+					}
+				}
+			}
+			
+			return Tile.WATER;
+			
+		}else {
+			Ship[] ships = AI.ships;
+			
+			for (int i = 0; i < ships.length; i++) {
+				for (Position position : ships[i].getOccupiedSpaces()) {
+					if(position.equals(pos)) {
+						ships[i].takeHit();
+						
+						if(ships[i].isSunk()) {
+							return Tile.SHIP_KILL;
+						}else {
+							return Tile.SHIP;
+						}
+						
+					}
+				}
+			}
+			
+			return Tile.WATER;
+		}
+		
 	}
 	
 }

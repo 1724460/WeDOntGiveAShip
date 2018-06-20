@@ -6,6 +6,7 @@ import javax.swing.SwingUtilities;
 
 import com.weDontGiveAShip.UI.panels.MatchPanel;
 import com.weDontGiveAShip.UI.panels.ShipPlacerPanel;
+import com.weDontGiveAShip.main.AI;
 import com.weDontGiveAShip.main.Main;
 
 import se1.schiffeVersenken.interfaces.Ship;
@@ -15,6 +16,8 @@ public class Gui extends JFrame{
 	private static final long serialVersionUID = 1L;
 
 	private boolean inGame;
+
+	public MatchPanel matchPanel;
 	
 	public Gui() {
 		super("Battleship by We Don't Give A Ship");
@@ -45,10 +48,13 @@ public class Gui extends JFrame{
 	
 	public void openMatchPanel(Ship[] ships) {
 		clear();
-		MatchPanel matchPanel = new MatchPanel(ships);
+		matchPanel = new MatchPanel(ships);
 		setSize(600, 1000);
 		add(matchPanel);
 		SwingUtilities.updateComponentTreeUI(Main.gui);
+		
+		//	KI platziert ihre Schiffe
+		Main.gui.matchPanel.p2.placeShips(Main.shipPlacer);
 		
 		inGame = true;
 	}

@@ -5,7 +5,7 @@ import se1.schiffeVersenken.interfaces.TurnAction;
 import se1.schiffeVersenken.interfaces.exception.action.InvalidActionException;
 import se1.schiffeVersenken.interfaces.util.Position;
 
-public class TurnActionImpl extends TurnAction{
+public class TurnActionImpl extends TurnAction {
 
 	@Override
 	protected Tile shootTile0(Position position) throws InvalidActionException {

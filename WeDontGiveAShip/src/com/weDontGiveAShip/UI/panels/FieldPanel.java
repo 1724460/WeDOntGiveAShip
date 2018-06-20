@@ -45,7 +45,7 @@ public class FieldPanel extends JPanel {
 		for (int x = 0; x < gridSize; x++) {
 			char letter = (char) ('A' + x);
 			JLabel letterLabel = new JLabel("" + letter);
-			letterLabel.setFont(new Font("Serif", Font.PLAIN, 28));
+			letterLabel.setFont(new Font("Calibri", Font.PLAIN, 28));
 			
 			letterLabel.setHorizontalAlignment(SwingConstants.CENTER);;
 			add(letterLabel);
@@ -53,7 +53,7 @@ public class FieldPanel extends JPanel {
 
 		for (int x = 0; x < gridSize; x++) {
 			JLabel numberLabel = new JLabel("" +  (x+1));
-			numberLabel.setFont(new Font("Serif", Font.PLAIN, 28));
+			numberLabel.setFont(new Font("Calibri", Font.PLAIN, 28));
 			
 			numberLabel.setHorizontalAlignment(SwingConstants.CENTER);;
 			add(numberLabel);
@@ -62,9 +62,10 @@ public class FieldPanel extends JPanel {
 				JButton currentButton = new JButton("");
 				
 				currentButton.setEnabled(enabled);
-				buttons[x][y] = currentButton;
-
-				currentButton.addActionListener(new Listener(this, x, y));
+				//	Ich hab hier jetzt mal in den nächsten 2 Zeilen die X und Y umgedreht, damit es "normal" ist
+				buttons[y][x] = currentButton;
+				currentButton.addActionListener(new Listener(this, y, x));
+				
 				currentButton.setBackground(Main.WATER_COLOR);
 				add(currentButton);
 
@@ -83,5 +84,7 @@ public class FieldPanel extends JPanel {
 	public void update() {
 		
 	}
+	
+	
 
 }

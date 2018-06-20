@@ -25,6 +25,8 @@ public class Main {
 		new Main();
 	}
 
+	public static ShipPlacerImpl shipPlacer;
+
 	public Main() {
 		// Default Settings
 
@@ -35,7 +37,7 @@ public class Main {
 		}
 		builder.setShipBorderConditions(DEFAULT_SHIP_BORDER_CONDITIONS);
 		settings = builder.createGameSettings();
-
+		shipPlacer = new ShipPlacerImpl();
 		// User Interface
 		gui = new Gui();
 	}
