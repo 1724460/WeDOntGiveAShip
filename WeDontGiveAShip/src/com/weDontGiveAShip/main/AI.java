@@ -1,15 +1,12 @@
 package com.weDontGiveAShip.main;
 
-import java.awt.Color;
 import java.util.ArrayList;
-import java.util.LinkedList;
+import java.util.Arrays;
 import java.util.List;
-import java.util.Queue;
 import java.util.Random;
 
-import javax.swing.JFrame;
-
 import com.weDontGiveAShip.UI.panels.FieldPanel;
+import com.weDontGiveAShip.UI.panels.MatchPanel;
 
 import se1.schiffeVersenken.interfaces.GameSettings;
 import se1.schiffeVersenken.interfaces.PlayableAI;
@@ -19,7 +16,6 @@ import se1.schiffeVersenken.interfaces.Ship;
 import se1.schiffeVersenken.interfaces.ShipPlacer;
 import se1.schiffeVersenken.interfaces.Tile;
 import se1.schiffeVersenken.interfaces.TurnAction;
-import se1.schiffeVersenken.interfaces.exception.action.InvalidActionException;
 import se1.schiffeVersenken.interfaces.exception.shipPlacement.InvalidShipPlacementException;
 import se1.schiffeVersenken.interfaces.util.Direction;
 import se1.schiffeVersenken.interfaces.util.Position;
@@ -37,23 +33,25 @@ public class AI extends PlayerImpl implements PlayerCreator {
 
 	public static final int PLAYFIELD_SIZE = 10;
 
-	List<Position> alreadyTakenPositions = new ArrayList<Position>();
+	private List<Position> alreadyTakenPositions = new ArrayList<Position>();
+	public static List<Position> alreadyShotOnPositions = new ArrayList<Position>();
+	
 	static FieldPanel panel;
 
 	public static Ship[] ships;
 	
-	public static void main(String args[]) {
-		JFrame f = new JFrame();
-
-		f.setSize(600, 800);
-		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-		panel = new FieldPanel(PLAYFIELD_SIZE, false);
-		f.add(panel);
-		f.setVisible(true);
-
-		new AI().placeShips(new ShipPlacerImpl());
-	}
+//	public static void main(String args[]) {
+//		JFrame f = new JFrame();
+//
+//		f.setSize(600, 800);
+//		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//
+//		panel = new FieldPanel(PLAYFIELD_SIZE, false);
+//		f.add(panel);
+//		f.setVisible(true);
+//
+//		new AI().placeShips(new ShipPlacerImpl());
+//	}
 
 	@Override
 	public void placeShips(ShipPlacer placer) {
@@ -66,56 +64,53 @@ public class AI extends PlayerImpl implements PlayerCreator {
 			e.printStackTrace();
 		}
 		
-		this.ships = ships;
+		
+//		// zeichnet auf den test frame hier in der klasse (kann später gelöscht werden)
+//		for (int i = 0; i < ships.length; i++) {
+//			for (Position position : ships[i].getOccupiedSpaces()) {
+//				panel.setColor(position.x, position.y, Color.RED);
+//			}
+//		}
+		
+		AI.ships = ships;
 	}
-
-	// A list, that contains every Position the AI initially hit and is currently
-	// targetting
-	List<TargettedShip> targetList = new ArrayList<TargettedShip>();
-	Queue<TargettedShip> targetQueue = new LinkedList<TargettedShip>();
-	Queue<AIPrediction> lastPredictions = new LinkedList<AIPrediction>();
-
-	TargettedShip currentTarget = null;
 
 	@Override
 	public void takeTurn(TurnAction turnAction) {
+
+	}
+	
+	public Tile turn() {
 		Position shootAtPosition = getShootAtPosition();
+		Tile hitField = MatchPanel.whatDidIHit(AI.class, shootAtPosition.x, shootAtPosition.y);
 
-		Tile hitField;
-
-		try {
-			hitField = turnAction.shootTile(shootAtPosition);
-			
-		} catch (InvalidActionException e) {
-			e.printStackTrace();
-			hitField = null;
-		}
+//		try {
+//			hitField = turnAction.shootTile(shootAtPosition);
+//			
+//		} catch (InvalidActionException e) {
+//			e.printStackTrace();
+//			hitField = null;
+//		}
 
 		// Hit a ship
 		if (hitField == Tile.SHIP) {
 
-//			// Hit a already known ship
-//			if (hitAlreadyKnownShip(shootAtPosition)) {
-//
-//				// Hit a previously unknown ship
-//			} else {
-//				targetQueue.add(new TargettedShip(shootAtPosition));
-//			}
-
+			
 			// Successfully destroyed a ship
 		} else if (hitField == Tile.SHIP_KILL) {
 
+			
 			// Hit water
 		} else if (hitField == Tile.WATER) {
+			
 			// do nothing i guess
 		}
-
+		
+		Main.gui.matchPanel.redraw();
+		return hitField;
 	}
 
-	
 	//	Fürs erste einfach nur auf random Positions schießen
-	List<Position> allPositionsWeAlreadyShotAt = new ArrayList<Position>();
-	
 	private Position getShootAtPosition() {
 		Random rand = new Random();
 		Position position;
@@ -123,72 +118,31 @@ public class AI extends PlayerImpl implements PlayerCreator {
 		do {
 			position = new Position(rand.nextInt(PLAYFIELD_SIZE), rand.nextInt(PLAYFIELD_SIZE));
 			
-		}while(allPositionsWeAlreadyShotAt.contains(position));
+		}while(alreadyShotOnPositions.contains(position));
 		
 		
-		allPositionsWeAlreadyShotAt.add(position);
+		alreadyShotOnPositions.add(position);
 		
 		return position;
 		
-		
-		
-//		Position shootAt = null;
-//
-//		int predictionLocation;
-//		
-//		AIPrediction prevPrediction = lastPredictions.peek();
-//		
-//		if (currentTarget == null) {
-//			// random shot auf das feld
-//			
-//			
-//		} else {
-//			
-//			if (prevPrediction.success) {
-//				
-//				if (prevPrediction.location == AIPrediction.UP) {
-//					// predictionLocation =
-//
-//				} else if (prevPrediction.location == AIPrediction.RIGHT) {
-//
-//				} else if (prevPrediction.location == AIPrediction.DOWN) {
-//
-//				} else if (prevPrediction.location == AIPrediction.LEFT) {
-//
-//				}
-//				
-//				
-//			//	did not hit the ship last time
-//			}else {
-//				
-//				//	hier shot in der nähe machen
-//				
-//				
-//			}
-//
-//		}
-//
-//		return shootAt;
 	}
 
-	private boolean hitAlreadyKnownShip(Position shootAtPosition) {
-		for (TargettedShip ship : targetList) {
-			for (Position pos : ship.getHitPositions()) {
 
-				if (pos.equals(shootAtPosition)) {
-					return true;
-				}
-
-			}
-		}
-
-		return false;
-	}
-
+	Position lastPosition = null;
+	Tile lastHitTile = null;
+	Ship lastHitShip = null;
+	
+	List<Position> allEnemeyShotPositions = new ArrayList<Position>();
+	
 	@Override
-	public void onEnemyShot(Position position, Tile tile, Ship ship) {
-		// TODO Auto-generated method stub
+	public void onEnemyShot(Position lastPosition, Tile lastHitTile, Ship lastHitShip) {
+		this.lastPosition = lastPosition;
+		this.lastHitTile = lastHitTile;
+		this.lastHitShip = lastHitShip;
+		allEnemeyShotPositions.add(lastPosition);
 
+		//	do something smart here
+		
 	}
 
 	@Override
@@ -224,18 +178,6 @@ public class AI extends PlayerImpl implements PlayerCreator {
 			shipList.add(generateShip(5));
 		}
 
-//		// zeichnet auf den test frame hier in der klasse (kann später gelöscht werden)
-//		for (int i = 0; i < shipList.size(); i++) {
-//			for (Position position : shipList.get(i).getOccupiedSpaces()) {
-//				panel.setColor(position.x, position.y, Color.RED);
-//			}
-//		}
-
-		/*
-		 * Hier könnte man noch einfügen, dass je nach Spielregeln, re-generated wird.
-		 * (oder wir lassen es einfach bei "Berührungen erlaubt")
-		 */
-
 		return shipList.toArray(new Ship[SHIP_COUNT]);
 	}
 
@@ -262,6 +204,9 @@ public class AI extends PlayerImpl implements PlayerCreator {
 			}
 
 		} while (continueSearching);
+		
+		//	Adds all occupied positions of the ship to this list, so newly generated ships don't overlap
+		alreadyTakenPositions.addAll(Arrays.asList(ship.getOccupiedSpaces()));
 
 		return ship;
 	}
@@ -279,8 +224,6 @@ public class AI extends PlayerImpl implements PlayerCreator {
 			x = rand.nextInt(PLAYFIELD_SIZE - 1 );
 			y = rand.nextInt(PLAYFIELD_SIZE - 1 - size);
 		}
-
-		System.out.println("Neues AI Schiff ("+size+"): "+x+" "+y);
 		
 		return new Position(x, y);
 	}

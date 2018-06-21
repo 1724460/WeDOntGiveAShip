@@ -20,6 +20,8 @@ import se1.schiffeVersenken.interfaces.util.Position;
 
 public class ShipPlacerPanel extends JPanel {
 
+	private static final long serialVersionUID = 1L;
+	
 	private int[] shipAmount;
 	private ArrayList<Ship> ships;
 
@@ -120,6 +122,7 @@ public class ShipPlacerPanel extends JPanel {
 		previousShipLength = new ArrayList<>();
 
 		add(fieldPanel = new FieldPanel(10, true) {
+			private static final long serialVersionUID = 1L;
 
 			@Override
 			public void setColor(int x, int y, Color color) {

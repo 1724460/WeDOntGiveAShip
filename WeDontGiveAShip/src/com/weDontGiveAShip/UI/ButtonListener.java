@@ -10,8 +10,7 @@ public class ButtonListener implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource() == MainMenuPanel.playButton){
-			System.out.println("Jetzt Shipplacer öffnen");
-			
+
 			Main.gui.openShipPlacer();
 			
 		}else if(e.getSource() == MainMenuPanel.exitButton){

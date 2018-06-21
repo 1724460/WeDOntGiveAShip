@@ -30,7 +30,6 @@ public class ShipPlacerImpl implements ShipPlacer {
 		debug.setTitle("DEBUG WINDOW FOR SHIP PLACEMENTS");
 		debug.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		debug.setSize(600, 800);
-		debug.setLocationRelativeTo(null);
 		
 		FieldPanel fp = new FieldPanel(10, false);
 		
@@ -42,14 +41,10 @@ public class ShipPlacerImpl implements ShipPlacer {
 		
 		for (int i = 0; i < shipList.size(); i++) {
 			for (Position position : shipList.get(i).getOccupiedSpaces()) {
-				System.out.println(position.x+";"+position.y);
-			
 				fp.setColor(position.x, position.y, Color.RED);
 			}
 		}
-		
-		
-		
+
 		debug.setVisible(true);
 	}
 

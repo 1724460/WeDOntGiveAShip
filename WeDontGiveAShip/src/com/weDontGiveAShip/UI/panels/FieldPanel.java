@@ -15,6 +15,8 @@ import com.weDontGiveAShip.main.Main;
 
 public class FieldPanel extends JPanel {
 
+	private static final long serialVersionUID = 1L;
+
 	// ActionListener
 	class Listener implements ActionListener {
 		private FieldPanel fieldPanel;
@@ -33,7 +35,7 @@ public class FieldPanel extends JPanel {
 
 	}
 
-	private JButton[][] buttons;
+	public JButton[][] buttons;
 
 	public FieldPanel(int gridSize, boolean enabled) {
 		super();
@@ -74,7 +76,7 @@ public class FieldPanel extends JPanel {
 	}
 
 	public void onClick(int x, int y) {
-		System.out.println("Clicked(" + x + ", " + y + ")");
+//		System.out.println("Clicked(" + x + ", " + y + ")");
 	}
 	
 	public void setColor(int x, int y, Color color) {

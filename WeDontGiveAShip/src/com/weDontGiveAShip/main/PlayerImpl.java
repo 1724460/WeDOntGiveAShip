@@ -1,7 +1,7 @@
 package com.weDontGiveAShip.main;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.weDontGiveAShip.UI.panels.MatchPanel;
 
@@ -18,7 +18,7 @@ import se1.schiffeVersenken.interfaces.util.Position;
 public class PlayerImpl implements Player, PlayerCreator{
 
 	public static Ship[] ships;
-	public static Set<Position> alreadyShotOnPositions = new HashSet<Position>();
+	public static List<Position> alreadyShotOnPositions = new ArrayList<Position>();
 	
 	@Override
 	public void placeShips(ShipPlacer placer) {
@@ -31,23 +31,22 @@ public class PlayerImpl implements Player, PlayerCreator{
 		
 	}
 	
-	public void turn(int x, int y) {
-		System.out.println("Du hast auf "+x+","+y+" geschossen!");
+	public Tile turn(int x, int y) {
 		
 		Tile hitTile = MatchPanel.whatDidIHit(getClass(), x, y);
 		
 		if(hitTile == Tile.WATER) {
-			System.out.println("Leider kein Treffer...");
+			System.out.println("*** Leider kein Treffer... ***");
 			
 //			Main.gui.matchPanel.field1.setColor(x, y, Color.GRAY);
 			
 		}else if(hitTile == Tile.SHIP) {
-			System.out.println("Treffer!");
+			System.out.println("*** Treffer! ***");
 			
 //			Main.gui.matchPanel.field1.setColor(x, y, Color.RED);
 
 		}else if(hitTile == Tile.SHIP_KILL) {
-			System.out.println("Treffer, versenkt!");
+			System.out.println("*** Treffer, versenkt! ***");
 //			Ship hitShip = MatchPanel.getHitShip(AI.class, x, y);
 //		
 //			for(Position pos : hitShip.getOccupiedSpaces()) {
@@ -60,6 +59,8 @@ public class PlayerImpl implements Player, PlayerCreator{
 		alreadyShotOnPositions.add(new Position(x, y));
 		
 		Main.gui.matchPanel.redraw();
+		
+		return hitTile;
 	}
 	
 
@@ -81,7 +82,7 @@ public class PlayerImpl implements Player, PlayerCreator{
 	}
 
 	public void setShips(Ship[] ships) {
-		this.ships = ships;
+		PlayerImpl.ships = ships;
 	}
 	
 	public Ship[] getShips() {

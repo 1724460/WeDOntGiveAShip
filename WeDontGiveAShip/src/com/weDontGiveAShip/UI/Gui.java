@@ -6,7 +6,6 @@ import javax.swing.SwingUtilities;
 
 import com.weDontGiveAShip.UI.panels.MatchPanel;
 import com.weDontGiveAShip.UI.panels.ShipPlacerPanel;
-import com.weDontGiveAShip.main.AI;
 import com.weDontGiveAShip.main.Main;
 
 import se1.schiffeVersenken.interfaces.Ship;
@@ -43,7 +42,7 @@ public class Gui extends JFrame{
 		clear();
 		shipPlacer = new ShipPlacerPanel();
 		add(shipPlacer);
-		SwingUtilities.updateComponentTreeUI(Main.gui);
+		update();
 	}
 	
 	public void openMatchPanel(Ship[] ships) {
@@ -67,6 +66,10 @@ public class Gui extends JFrame{
 	public boolean isInGame(){
 		return inGame;
 	}
-	
+
+	public static void update() {
+		SwingUtilities.updateComponentTreeUI(Main.gui);
+		Main.gui.repaint();
+	}
 }
 

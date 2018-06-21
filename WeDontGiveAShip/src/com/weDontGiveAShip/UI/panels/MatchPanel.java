@@ -5,13 +5,11 @@ package com.weDontGiveAShip.UI.panels;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GridLayout;
-import java.util.Arrays;
-import java.util.Collections;
 
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JTextArea;
-import javax.swing.SwingUtilities;
 
+import com.weDontGiveAShip.UI.Gui;
 import com.weDontGiveAShip.main.AI;
 import com.weDontGiveAShip.main.Main;
 import com.weDontGiveAShip.main.PlayerImpl;
@@ -30,7 +28,7 @@ public class MatchPanel extends JPanel{
 	
 	private JPanel fields;
 	public FieldPanel field1, field2;
-	private JTextArea logArea;
+//	private JTextArea logArea;
 	
 	public PlayerImpl p1;
 	public AI p2;
@@ -50,6 +48,7 @@ public class MatchPanel extends JPanel{
 		
 		//	Feld auf dem man klick, wohin man schießen möchte, überschreibt onClick zum Schuss verarbeiten
 		field1 = new FieldPanel(10, true) {
+			private static final long serialVersionUID = 1L;
 
 			@Override
 			public void setColor(int x, int y, Color color) {
@@ -59,21 +58,36 @@ public class MatchPanel extends JPanel{
 			@Override
 			public void onClick(int x, int y) {
 				if(PlayerImpl.alreadyShotOnPositions.contains(new Position(x, y))) {
-					System.out.println("Du kannst nicht nochmal auf dieses Feld schießen!");
+					JOptionPane.showMessageDialog(null, "Du hast bereits auf dieses Feld geschossen!");
 					return;
 				}
 				
-				p1.turn(x, y);
-				
+				Tile tileThatPlayer1Hit = p1.turn(x, y);
+				p2.onEnemyShot(new Position(x, y), tileThatPlayer1Hit, getHitShip(PlayerImpl.class, x, y));
+				System.out.println("-----------------------------------");
 				//	AI schießt jetzt
-//				p2.turn();
+				p2.turn();
+				
+				Player winningPlayer = isGameOver();
+				
+				if(winningPlayer != null) {
+					
+					//	AI won
+					if(winningPlayer instanceof AI) {
+						JOptionPane.showMessageDialog(null, "Du hast leider verloren!");
+
+					//	Player won
+					}else {
+						JOptionPane.showMessageDialog(null, "Du hast gewonnen!");
+					}
+					
+					System.exit(0);
+					
+				}
 				
 			}
 
 		};
-		
-		
-		
 		
 		
 		field2 = new FieldPanel(10, false);
@@ -97,11 +111,34 @@ public class MatchPanel extends JPanel{
 		add(fields, BorderLayout.CENTER);
 	}
 
+	public static Player isGameOver() {
+		Player winningPlayer = Main.gui.matchPanel.p1;
+		
+		for(Ship ship : PlayerImpl.ships) {
+			if(!ship.isSunk()) {
+				winningPlayer = null;
+			}
+		}
+		
+		if(winningPlayer != null) {
+			return winningPlayer;
+		}
+		
+		winningPlayer = Main.gui.matchPanel.p2;
+		
+		for(Ship ship : AI.ships) {
+			if(!ship.isSunk()) {
+				winningPlayer = null;
+			}
+		}
+		
+		
+		return winningPlayer;
+	}
+	
+	/** Pass class of the player that shot **/
 	public static Tile whatDidIHit(Class<? extends Player> class1, int x, int y) {
 		Position pos = new Position(x, y);
-		
-		//TODO: DEBUG MSG
-		System.out.println(class1);
 		
 		if(class1.equals(AI.class)) {
 			Ship[] ships = PlayerImpl.ships;
@@ -112,8 +149,10 @@ public class MatchPanel extends JPanel{
 						ships[i].takeHit();
 						
 						if(ships[i].isSunk()) {
+							System.out.println("*** Es wurde eins deiner Schiffe an Position '"+((char)(x+1+'0'))+""+y+"' getroffen und versenkt! ***");
 							return Tile.SHIP_KILL;
 						}else {
+							System.out.println("*** Es wurde eins deiner Schiffe an Position '"+((char)(x+1+'A'))+""+y+"' getroffen! ***");
 							return Tile.SHIP;
 						}
 						
@@ -121,6 +160,7 @@ public class MatchPanel extends JPanel{
 				}
 			}
 			
+			System.out.println("*** Es wurde keins von deinen Schiffen getroffen! ***");
 			return Tile.WATER;
 			
 		}else {
@@ -146,11 +186,14 @@ public class MatchPanel extends JPanel{
 		
 	}
 	
+	
+	/** Pass class of the player of which ships you refer to **/
 	public static Ship getHitShip(Class<? extends Player> class1, int x, int y) {
 		Ship[] ships;
 		
 		if(class1.equals(AI.class)) {
 			ships = AI.ships;
+			
 		}else {
 			ships = PlayerImpl.ships;
 		}
@@ -168,18 +211,26 @@ public class MatchPanel extends JPanel{
 	
 	public static final int PLAYFIELD_SIZE = 10;
 	
+//	/**		Class of the player that just shot (AI -> redraw lower field, Player -> redraw upper)	**/
 	public void redraw() {
-		Ship[] ships = AI.ships;
 
 		for(int y = 0; y < PLAYFIELD_SIZE; y++) {
 			for(int x = 0; x < PLAYFIELD_SIZE; x++) {
-				if(PlayerImpl.alreadyShotOnPositions.contains(new Position(x, y))) {
-					Main.gui.matchPanel.field1.setColor(x, y, Color.GRAY);
+				Position position = new Position(x, y);
+				
+				if(PlayerImpl.alreadyShotOnPositions.contains(position)) {
+					field1.setColor(x, y, Color.GRAY);
 				}
+				
+				if(AI.alreadyShotOnPositions.contains(position)) {
+					field2.setColor(x, y, Color.GRAY);
+				}
+				
 			}
 		}
 		
-		for(Ship ship : ships) {
+		//	Update AI ships
+		for(Ship ship : AI.ships) {
 			Color color;
 			
 			if(ship.isSunk()) {
@@ -191,22 +242,31 @@ public class MatchPanel extends JPanel{
 			
 			for(Position pos : ship.getOccupiedSpaces()) {
 				if(PlayerImpl.alreadyShotOnPositions.contains(pos)) {
-					Main.gui.matchPanel.field1.setColor(pos.x, pos.y, color);
+					field1.setColor(pos.x, pos.y, color);
 				}
 			}
 		}
 		
-		SwingUtilities.updateComponentTreeUI(Main.gui.matchPanel);
-		Main.gui.matchPanel.repaint();
-		SwingUtilities.updateComponentTreeUI(Main.gui);
-		Main.gui.repaint();
+		//	update player ships
+		for(Ship ship : PlayerImpl.ships) {
+			Color color;
+			
+			if(ship.isSunk()) {
+				color = Color.BLACK;
+				
+			}else {
+				color = Color.RED;
+			}	
+			
+			for(Position pos : ship.getOccupiedSpaces()) {
+				if(AI.alreadyShotOnPositions.contains(pos)) {
+					field2.setColor(pos.x, pos.y, color);
+				}
+			}
+		}
 		
 		
-		
-		System.out.println("---");
-		Arrays.asList(AI.ships).forEach(ship -> System.out.println(ship));
-		System.out.println("---");
-		System.out.println(PlayerImpl.alreadyShotOnPositions);
+		Gui.update();
 	}
 	
 }
