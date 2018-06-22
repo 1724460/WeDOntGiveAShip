@@ -18,7 +18,8 @@ public class Gui extends JFrame{
 
 	public MatchPanel matchPanel;
 	
-	public Gui() {
+	public Gui() {		
+		
 		super("Battleship by We Don't Give A Ship");
 		setSize(600, 800);
 		setResizable(false);

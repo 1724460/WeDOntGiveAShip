@@ -63,11 +63,22 @@ public class MatchPanel extends JPanel{
 				}
 				
 				Tile tileThatPlayer1Hit = p1.turn(x, y);
+				checkGameOver();
 				p2.onEnemyShot(new Position(x, y), tileThatPlayer1Hit, getHitShip(PlayerImpl.class, x, y));
+				
+				
 				System.out.println("-----------------------------------");
 				//	AI schießt jetzt
 				p2.turn();
 				
+				checkGameOver();
+				
+			}
+
+			
+			
+			
+			private void checkGameOver() {
 				Player winningPlayer = isGameOver();
 				
 				if(winningPlayer != null) {
@@ -82,7 +93,6 @@ public class MatchPanel extends JPanel{
 					}
 					
 					System.exit(0);
-					
 				}
 				
 			}
@@ -114,7 +124,7 @@ public class MatchPanel extends JPanel{
 	public static Player isGameOver() {
 		Player winningPlayer = Main.gui.matchPanel.p1;
 		
-		for(Ship ship : PlayerImpl.ships) {
+		for(Ship ship : AI.ships) {
 			if(!ship.isSunk()) {
 				winningPlayer = null;
 			}
@@ -126,7 +136,7 @@ public class MatchPanel extends JPanel{
 		
 		winningPlayer = Main.gui.matchPanel.p2;
 		
-		for(Ship ship : AI.ships) {
+		for(Ship ship : PlayerImpl.ships) {
 			if(!ship.isSunk()) {
 				winningPlayer = null;
 			}

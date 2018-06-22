@@ -11,7 +11,7 @@ import se1.schiffeVersenken.interfaces.GameSettingsBuilder;
 public class Main {
 
 //	public final static Color SHIP_COLOR = new Color(139,69,19);
-	public final static Color SHIP_COLOR = Color.RED;
+	public final static Color SHIP_COLOR = new Color(160,82,45);
 	public final static Color WATER_COLOR = new Color(65,105,225);
 	public final static Color SHIP_HIT_COLOR = new Color(128,0,0);
 
